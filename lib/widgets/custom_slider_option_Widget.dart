@@ -1,36 +1,39 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_home_ui/config/ui_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomSliderWidget extends StatelessWidget {
-  const CustomSliderWidget({
-    super.key, required this.sliderValue, required this.title, required this.iconPath, this.onChanged,
+
+
+class CustomSliderOptionWidget extends StatelessWidget {
+  const CustomSliderOptionWidget({
+    super.key, required this.title, required this.iconPath, this.onChanged, required this.value,
   });
-  final double sliderValue;
   final String title,iconPath;
+  final double value;
   final Function(double newValue)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,style: GoogleFonts.manrope(
-            fontSize: 12,
-            color: UiColors.whiteTextColor),),
+        Text(title,style: GoogleFonts.manrope(fontSize: 14,color: UiColors.greyColor)),
         Row(
           children: [
             Expanded(
               child: Slider(
-                value: sliderValue,
+                value: value,
                 max: 100,
                 thumbColor: UiColors.whiteColor,
                 activeColor: UiColors.primaryColor,
                 inactiveColor: UiColors.greyColor,
-                overlayColor: WidgetStatePropertyAll(UiColors.greyColor.withOpacity(0.50)),
-                onChanged: (value) { onChanged!(value); },
-              ),
+                overlayColor: WidgetStatePropertyAll(UiColors.whiteColor.withOpacity(0.20)),
+                onChanged: (value) {
+                  onChanged!(value);
+                },),
             ),
 
             SvgPicture.asset(iconPath)

@@ -3,43 +3,44 @@ import 'package:flutter_smart_home_ui/config/ui_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomNavigationWidget extends StatelessWidget {
-  const CustomNavigationWidget({super.key, required this.onChangePage,this.selectedPageIndex = 0});
-  final Function(int newPageIndex) onChangePage;
-  final int selectedPageIndex;
+  const CustomNavigationWidget({super.key, required this.selectedIndex, required this.onPageChanged});
+  final int selectedIndex;
+  final Function(int newIndex) onPageChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 65,
-      decoration: BoxDecoration(
-        color: UiColors.brownColor,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(32),
-          topLeft: Radius.circular(32),
-        ),
-        border: Border(top: BorderSide(color: UiColors.primaryColor.withOpacity(0.45)))
+      height: 90,
+      decoration: const BoxDecoration(
+        color: UiColors.scaffoldBgColor
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _NavItem(
-              iconPath: "assets/svg/home.svg",
-              selected: selectedPageIndex == 0,
-              onTap: () =>onChangePage(0)),
-          _NavItem(
-            iconPath: "assets/svg/search.svg",
-              selected: selectedPageIndex == 1,
-              onTap: () =>onChangePage(1)),
-          _NavItem(
-            iconPath: "assets/svg/grid.svg",
-              selected: selectedPageIndex == 2,
-              onTap: () =>onChangePage(2)),
-          _NavItem(
-            iconPath: "assets/svg/profile.svg",
-              selected: selectedPageIndex == 3,
-              onTap: () =>onChangePage(3)),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _NavItem(
+                iconPath: "assets/svg/home.svg",
+                selected: selectedIndex == 0,
+                onTap: () => onPageChanged(0),
+            ),
+            _NavItem(
+                iconPath: "assets/svg/search.svg",
+              selected: selectedIndex == 1,
+              onTap: () => onPageChanged(1),
+                ),
+            _NavItem(
+              iconPath: "assets/svg/grid.svg",
+              selected: selectedIndex == 3,
+              onTap: () => onPageChanged(3),
+            ),
+            _NavItem(
+                iconPath: "assets/svg/profile.svg",
+              selected: selectedIndex == 4,
+              onTap: () => onPageChanged(4),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -47,8 +48,10 @@ class CustomNavigationWidget extends StatelessWidget {
 
 
 
+
+
 class _NavItem extends StatelessWidget {
-  const _NavItem({super.key, required this.iconPath, this.selected = false, required this.onTap});
+  const _NavItem({super.key, required this.iconPath, required this.selected, required this.onTap});
   final String iconPath;
   final bool selected;
   final VoidCallback onTap;
@@ -58,7 +61,10 @@ class _NavItem extends StatelessWidget {
       onTap: onTap,
       child: SvgPicture.asset(
           iconPath,
-        colorFilter: ColorFilter.mode(selected? UiColors.primaryColor : UiColors.greyColor,BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(
+              selected ? UiColors.primaryColor : UiColors.greyColor,
+              BlendMode.srcIn
+          ),
       ),
     );
   }

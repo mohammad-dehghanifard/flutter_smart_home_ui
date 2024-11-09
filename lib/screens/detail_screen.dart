@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_home_ui/config/ui_colors.dart';
 import 'package:flutter_smart_home_ui/widgets/custom_navigation_widget.dart';
-import 'package:flutter_smart_home_ui/widgets/custom_slider_widget.dart';
-import 'package:flutter_smart_home_ui/widgets/settings_card_widget.dart';
+import 'package:flutter_smart_home_ui/widgets/custom_slider_option_Widget.dart';
+import 'package:flutter_smart_home_ui/widgets/custom_smart_card_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key});
@@ -14,138 +15,138 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-   bool humidifierAir = false;
-   bool purifierAir = true;
-   double mainLightValue = 60.0;
-   double floorLampValue = 20.0;
-   int selectedPageIndex = 0;
+
+  bool humidFireValue = false;
+  bool purifierValue = true;
+  double mainLightValue = 30;
+  double floorLightValue = 60;
+  int selectedPage = 0;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CustomNavigationWidget(
-        selectedPageIndex: selectedPageIndex,
-        onChangePage: (int newPageIndex) {
+        selectedIndex: selectedPage,
+        onPageChanged: (newIndex) {
           setState(() {
-            selectedPageIndex = newPageIndex;
+            selectedPage = newIndex;
           });
-        },),
-      body: SafeArea(
-        child:  SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Stack(
-            children: [
-              // image
-              Container(
+        },
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          children: [
+            // image
+            SizedBox(
+              width: double.infinity,
+              height: 480,
+              child: Image.asset("assets/png/image.png",fit: BoxFit.cover),
+            ),
+            // app bar
+            Positioned(
+              top: 60,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset("assets/svg/back.svg"),
+                    Text("Bedroom",style: GoogleFonts.manrope(fontSize: 16,color: UiColors.whiteColor),),
+                    SvgPicture.asset("assets/svg/bell.svg"),
+                  ],
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: 400,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomSmartCardWidget(
+                      value: '36%',
+                      title: "HumidifierAir",
+                      isActive: humidFireValue,
+                      iconPath: "assets/svg/humidity.svg",
+                      onChanged: (newValue) {
+                        setState(() {
+                          humidFireValue = newValue;
+                        });
+                      },
+                    ),
+                    CustomSmartCardWidget(
+                      value: '72%',
+                      title: "Purifier Air",
+                      isActive: purifierValue,
+                      iconPath: "assets/svg/clean.svg",
+                      onChanged: (newValue) {
+                        setState(() {
+                          purifierValue = newValue;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: 650,
+              left: 0,
+              right: 0,
+              child: Container(
                 width: double.infinity,
-                height: 450,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(image: AssetImage("assets/png/image.png"),fit: BoxFit.cover)
+                height: 180,
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 16.0),
+                decoration: BoxDecoration(
+                  color: UiColors.brownColor,
+                  borderRadius: BorderRadius.circular(12)
+                ),
+                child: Column(
+                  children: [
+                    CustomSliderOptionWidget(
+                      title: "Main light",
+                      iconPath: "assets/svg/Lamp.svg",
+                      value: mainLightValue,
+                      onChanged: (newValue) {
+                        setState(() {
+                          mainLightValue = newValue;
+                        });
+                      },
+                    ),
+
+                    CustomSliderOptionWidget(
+                      title: "Floor lamp",
+                      iconPath: "assets/svg/Tablelamp.svg",
+                      value: floorLightValue,
+                      onChanged: (newValue) {
+                        setState(() {
+                          floorLightValue = newValue;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
-
-              Positioned(
-                top: 10,
-                left: 0,
-                right: 0,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SvgPicture.asset("assets/svg/back.svg"),
-                      Text("Bedroom",style: GoogleFonts.manrope(fontSize: 18,color: UiColors.whiteColor),),
-                      SvgPicture.asset("assets/svg/bell.svg"),
-                    ],
-                  ),
-                ),
-              ),
-
-              Positioned(
-                top: 400,
-                left: 0,
-                right: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      SettingsCardWidget(
-                        iconPath: "assets/svg/humidity.svg",
-                        title: "HumidifierAir",
-                        isActive: humidifierAir,
-                        onChanged: (value) {
-                          setState(() {
-                            humidifierAir = value;
-                          });
-                        }, value: 36,
-                      ),
-
-                      const Spacer(),
-
-                      SettingsCardWidget(
-                        iconPath: "assets/svg/clean.svg",
-                        title: "PurifierAir",
-                        isActive: purifierAir,
-                        onChanged: (value) {
-                          setState(() {
-                            purifierAir = value;
-                          });
-                        }, value: 73,
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 630,
-                left: 0,
-                right: 0,
-                child: Container(
-                  margin: const EdgeInsets.all(20.0),
-                  padding: const EdgeInsets.all(20.0),
-                  width: double.infinity,
-                  height: 170,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: UiColors.brownColor
-                  ),
-                  child: Column(
-                    children: [
-                      CustomSliderWidget(
-                        title: 'Main light',
-                        sliderValue: mainLightValue,
-                        iconPath: "assets/svg/Lamp.svg",
-                        onChanged: (newValue) {
-                            setState(() {
-                              mainLightValue = newValue;
-                            });
-                        },
-                      ),
-                      CustomSliderWidget(
-                        title: 'Floor lamp',
-                        sliderValue: floorLampValue,
-                        iconPath: "assets/svg/Tablelamp.svg",
-                        onChanged: (newValue) {
-                          setState(() {
-                            floorLampValue = newValue;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-
       ),
     );
   }
 }
+
+
 
 
 
